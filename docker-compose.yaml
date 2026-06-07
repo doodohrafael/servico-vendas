@@ -1,9 +1,3 @@
-volumes:
-  postgres_data:
-networks:
-  network-ecommerce-vendas:
-    driver: bridge
-
 services:
   db:
     image: postgres:18-alpine
@@ -14,8 +8,41 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-123}
       POSTGRES_DB: ${DB_NAME:-db_ecommerce_vendas}
     ports:
-      - "5432:5432"
+      - "54321:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
     networks:
       - network-ecommerce-vendas
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  servico-vendas:
+    image: servico-vendas:${IMAGE_TAG:-1.0.0}
+    depends_on:
+      db:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: ctn_servico_vendas
+    restart: unless-stopped
+    environment:
+      DB_HOST: ${DB_HOST:-ctn_db_ecommerce_vendas}
+      DB_NAME: ${DB_NAME:-db_ecommerce_vendas}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-123}
+    ports:
+      - "8081:8081"
+    networks:
+      - network-ecommerce-vendas
+
+volumes:
+  postgres_data:
+networks:
+  network-ecommerce-vendas:
+    driver: bridge
