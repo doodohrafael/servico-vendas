@@ -1,0 +1,21 @@
+volumes:
+  postgres_data:
+networks:
+  network-ecommerce-vendas:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:18-alpine
+    container_name: ctn_db_ecommerce_vendas
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-123}
+      POSTGRES_DB: ${DB_NAME:-db_ecommerce_vendas}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - network-ecommerce-vendas
