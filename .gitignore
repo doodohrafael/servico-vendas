@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.env
+chave-aws-servico-vendas.pem

@@ -1,0 +1,47 @@
+name: CD servico vendas
+
+on:
+  push:
+    branches: [development]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-lastest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1. Faz o login no armazém (DockerHub)
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 2. Builda e envia a imagem PRONTA para o armazém
+      - name: Build and Push Image to DockerHub
+        run: |
+          # Aqui rodaria o comando que gera a tag e faz o docker push
+          docker build -t seu-usuario/servico-vendas:${{ github.sha }} .
+          docker push seu-usuario/servico-vendas:${{ github.sha }}
+
+      # 3. Copia APENAS o docker-compose.yml e o .env para dentro da AWS
+      - name: Copiar arquivos de configuração para AWS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USER }}
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          source: "docker-compose.yml,.env"
+          target: "/app/servico-vendas"
+
+      # 4. Entra via SSH e manda a AWS rodar a imagem nova
+      - name: Executar Container na AWS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USER }}
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          script: |
+            cd /app/servico-vendas
+            docker compose pull
+            docker compose up -d
