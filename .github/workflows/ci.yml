@@ -4,7 +4,7 @@ on:
   push:
     branches: [ development ]
   pull_request:
-    branches: [ developmet ]
+    branches: [ development ]
 
 jobs:
   build-and-test:
@@ -20,6 +20,7 @@ jobs:
       - name: Run Tests & SonarQube
         run: |
           ./mvnw clean verify sonar:sonar \
+            -Dsonar.organization=doodohrafael \
             -Dsonar.projectKey=doodohrafael_servico-vendas \
             -Dsonar.host.url=${{ secrets.SONAR_URL }} \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
