@@ -21,8 +21,8 @@ jobs:
       - name: Build and Push Image to DockerHub
         run: |
           # Aqui rodaria o comando que gera a tag e faz o docker push
-          docker build -t seu-usuario/servico-vendas:${{ github.sha }} .
-          docker push seu-usuario/servico-vendas:${{ github.sha }}
+          docker build -t doodohrafaeldev/servico-vendas:${{ github.sha }} .
+          docker push doodohrafaeldev/servico-vendas:${{ github.sha }}
 
       # 3. Copia APENAS o docker-compose.yml e o .env para dentro da AWS
       - name: Copiar arquivos de configuração para AWS
