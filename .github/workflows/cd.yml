@@ -31,7 +31,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_PRIVATE_KEY }}
-          source: "docker-compose.yml,.env"
+          source: "docker-compose.yaml,.env"
           target: "/app/servico-vendas"
 
       # 4. Entra via SSH e manda a AWS rodar a imagem nova
