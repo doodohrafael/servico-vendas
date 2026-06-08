@@ -32,7 +32,8 @@ jobs:
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           source: "docker-compose.yaml,.env"
-          target: "/app/servico-vendas"
+#          target: "/app/servico-vendas"
+          target: "/home/ubuntu/servico-vendas"
 
       # 4. Entra via SSH e manda a AWS rodar a imagem nova
       - name: Executar Container na AWS
