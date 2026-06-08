@@ -42,6 +42,6 @@ jobs:
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           script: |
-            cd /app/servico-vendas
+            cd /home/ubuntu/servico-vendas
             docker compose pull
             docker compose up -d
