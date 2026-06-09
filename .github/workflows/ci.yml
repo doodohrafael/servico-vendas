@@ -30,18 +30,11 @@ jobs:
             -Dsonar.projectKey=doodohrafael_servico-vendas
             -Dsonar.organization=doodohrafael
             -Dsonar.java.binaries=target/classes
+            -Dsonar.host.url=${{ secrets.SONAR_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-      - name: Verificar Status do Quality Gate
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        timeout-minutes: 5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-#      - name: Executar Testes & SonarQube
-#        run: |
-#          ./mvnw clean verify sonar:sonar \
-#            -Dsonar.organization=doodohrafael \
-#            -Dsonar.projectKey=doodohrafael_servico-vendas \
-#            -Dsonar.java.binaries=target/classes \
-#            -Dsonar.host.url=${{ secrets.SONAR_URL }} \
-#            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+#      - name: Sonar Quality Gate
+#        uses: sonarsource/sonarqube-quality-gate-action@master
+#        timeout-minutes: 5
+#        env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
