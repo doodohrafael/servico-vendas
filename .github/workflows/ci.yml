@@ -17,7 +17,7 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
 
-      - name: Run Tests & SonarQube
+      - name: Executar Testes & SonarQube
         run: |
           ./mvnw clean verify sonar:sonar \
             -Dsonar.organization=doodohrafael \
