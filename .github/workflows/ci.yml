@@ -3,8 +3,8 @@ name: CI servico vendas
 on:
 #  push:
 #    branches: [ development ]
-  pull_request:
-    branches: [ development ]
+#  pull_request:
+#    branches: [ development ]
 
 jobs:
   build-and-test:
