@@ -10,33 +10,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 1. Faz o login no armazém (DockerHub)
-      - name: Login to DockerHub
+      - name: 1 - Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # 2. Builda e envia a imagem PRONTA para o armazém
-      - name: Build and Push Image to DockerHub
+      - name: 2 - Build and Push Image to DockerHub
         run: |
-          # Aqui rodaria o comando que gera a tag e faz o docker push
           docker build -t doodohrafaeldev/servico-vendas:latest .
           docker push doodohrafaeldev/servico-vendas:latest
 
-      # 3. Copia APENAS o docker-compose.yml e o .env para dentro da AWS
-      - name: Copiar arquivos de configuração para AWS
+      - name: 3 - Copiar arquivos de configuração para AWS
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           source: "docker-compose.yaml"
-#          target: "/app/servico-vendas"
           target: "/home/ubuntu/servico-vendas"
 
-      # 4. Entra via SSH e manda a AWS rodar a imagem nova
-      - name: Executar Container na AWS
+      - name: 4 - Subir containers na AWS via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AWS_HOST }}
@@ -44,11 +38,7 @@ jobs:
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/servico-vendas
-            # Cria a variável de ambiente temporariamente para o comando docker compose
-            export IMAGE_TAG=${{ github.sha }}
-            
-            # Login novamente para garantir (opcional, mas evita problemas)
-            # echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+            # sudo echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
             
             sudo docker compose pull
             sudo docker compose up -d
