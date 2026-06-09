@@ -44,5 +44,11 @@ jobs:
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/servico-vendas
+            # Cria a variável de ambiente temporariamente para o comando docker compose
+            export IMAGE_TAG=${{ github.sha }}
+            
+            # Login novamente para garantir (opcional, mas evita problemas)
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+            
             sudo docker compose pull
             sudo docker compose up -d
