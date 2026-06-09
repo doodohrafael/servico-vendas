@@ -31,7 +31,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_PRIVATE_KEY }}
-          source: "docker-compose.yaml,.env"
+          source: "docker-compose.yaml"
 #          target: "/app/servico-vendas"
           target: "/home/ubuntu/servico-vendas"
 
@@ -50,5 +50,5 @@ jobs:
             # Login novamente para garantir (opcional, mas evita problemas)
             # echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
             
-            sudo docker compose pull
-            sudo docker compose up -d
+            IMAGE_TAG=${{ github.sha }} sudo docker compose pull
+            IMAGE_TAG=${{ github.sha }} sudo docker compose up -d
