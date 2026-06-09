@@ -29,6 +29,7 @@ jobs:
           args: >
             -Dsonar.projectKey=doodohrafael_servico-vendas
             -Dsonar.organization=doodohrafael
+            -Dsonar.java.binaries=target/classes
 
       - name: Verificar Status do Quality Gate
         uses: sonarsource/sonarqube-quality-gate-action@master
@@ -41,5 +42,6 @@ jobs:
 #          ./mvnw clean verify sonar:sonar \
 #            -Dsonar.organization=doodohrafael \
 #            -Dsonar.projectKey=doodohrafael_servico-vendas \
+#            -Dsonar.java.binaries=target/classes \
 #            -Dsonar.host.url=${{ secrets.SONAR_URL }} \
 #            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
