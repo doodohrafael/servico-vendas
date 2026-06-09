@@ -21,7 +21,7 @@ services:
       start_period: 10s
 
   servico-vendas:
-    image: doodohrafaeldev/servico-vendas:${IMAGE_TAG:-1.0.0}
+    image: doodohrafaeldev/servico-vendas:${IMAGE_TAG:-latest}
     depends_on:
       db:
         condition: service_healthy
