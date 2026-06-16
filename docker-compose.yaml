@@ -36,6 +36,8 @@ services:
       DB_NAME: ${DB_NAME:-db_ecommerce_vendas}
       DB_USER: ${DB_USER:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-123}
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
     ports:
       - "8081:8081"
     networks:
