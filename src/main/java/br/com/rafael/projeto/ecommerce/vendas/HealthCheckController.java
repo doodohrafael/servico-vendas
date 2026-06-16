@@ -10,6 +10,6 @@ public class HealthCheckController {
 
     @GetMapping
     public String status() {
-        return "Aplicação está rodando!";
+        return "Aplicação está rodando!!";
     }
 }
